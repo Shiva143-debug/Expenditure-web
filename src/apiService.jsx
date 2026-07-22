@@ -3,8 +3,8 @@ import axios from 'axios';
 // Base URL for all API calls
 // https://backend-exp-1.onrender.com
 // https://exciting-spice-armadillo.glitch.me
-const BASE_URL = 'http://localhost:4000';
-// const BASE_URL = 'https://backend-exp.onrender.com';
+// const BASE_URL = 'http://localhost:4000';
+const BASE_URL = 'https://backend-exp.onrender.com';
 // const BASE_URL = "http://192.168.1.62:5000"
 
 
