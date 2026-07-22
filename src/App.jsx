@@ -23,11 +23,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
 import { useAuth } from './context/AuthContext';
-
 import { getCategories, getExpenseItems, getExpensesData, getFilteredExpenses, getIncomeByMonthYear, getIncomeSources, getSavingsData, getSavingsDataByMonthYear, getTotalIncomeData, deleteExpense, deleteCategory, deleteExpenseItem, deleteIncomeSource } from './apiService';
 import YearlyDetails from './components/YearlyDetails';
-import MapContainer from './components/MapContainer';
-import MapSection from './components/MapContainer';
 
 
 
