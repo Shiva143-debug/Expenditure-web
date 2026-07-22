@@ -1,0 +1,585 @@
+
+.overview-card {
+  position: relative;
+  background: transparent;
+  border-radius: 24px;
+  padding: 2%;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  min-height: 170px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.overview-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.overview-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(79, 172, 254, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.earnings-gradient {
+    box-shadow: 
+    0 8px 32px rgba(0, 150, 255, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.08);
+    border: 1px dashed rgba(79, 172, 254, 0.25);
+}
+
+.earnings-gradient::before {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.05));
+}
+
+.expenses-gradient {
+      box-shadow: 
+    0 8px 32px rgba(0, 150, 255, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+    border: 1px dashed rgba(255, 107, 0, 0.25);
+}
+
+.expenses-gradient::before {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 140, 0, 0.05));
+}
+
+.savings-gradient {
+        box-shadow: 
+    0 8px 32px rgba(0, 150, 255, 0.15),
+    inset 0 1px 2px rgba(0, 255, 150, 0.35);
+  border:1px dashed rgba(0, 255, 150, 0.35);
+}
+
+.savings-gradient::before {
+  background: linear-gradient(135deg, rgba(0, 255, 150, 0.1), rgba(0, 217, 255, 0.05));
+}
+
+.yearly-gradient {
+         box-shadow: 
+    0 8px 32px rgba(0, 150, 255, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+    border: 1px dashed rgba(250, 11, 214, 0.35);
+  border:1px dashed rgba(250, 11, 214, 0.35);
+
+}
+
+.yearly-gradient::before {
+  background: linear-gradient(135deg, rgba(100, 150, 255, 0.1), rgba(65, 105, 225, 0.05));
+}
+
+.card-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.earnings-gradient .card-icon {
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.15));
+  color: #4facfe;
+  border-color: rgba(79, 172, 254, 0.25);
+}
+
+.expenses-gradient .card-icon {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(255, 140, 0, 0.15));
+  color: #ff6b00;
+  border-color: rgba(255, 107, 0, 0.25);
+}
+
+.savings-gradient .card-icon {
+  background: linear-gradient(135deg, rgba(0, 255, 150, 0.2), rgba(0, 217, 255, 0.15));
+  color: #00ff96;
+  border-color: rgba(0, 255, 150, 0.25);
+}
+
+.yearly-gradient .card-icon {
+  background: linear-gradient(135deg, rgba(100, 150, 255, 0.2), rgba(65, 105, 225, 0.15));
+  color: #6496ff;
+  border-color: rgba(100, 150, 255, 0.25);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  min-height: 90px;
+}
+
+.loader-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.loading-spinner {
+  stroke: #00d4ff;
+  animation: spin 1.2s linear infinite;
+}
+
+.loader-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loader-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.18), rgba(255,255,255,0.12));
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+.loader-bar.short {
+  width: 30%;
+}
+
+.loader-bar.medium {
+  width: 55%;
+}
+
+.loader-bar.long {
+  width: 85%;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.card-amount {
+  /* font-size: 32px; */
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.card-subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.card-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-secondary span:first-child {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+}
+
+.secondary-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 640px) {
+  .overview-card {
+    padding: 10px;
+    min-height: 100px;
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0;
+  }
+
+  .card-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .coin-img, .coin-out, .coin-drop {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-content {
+    gap: 2px;
+  }
+
+  .card-title {
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+
+  .card-amount {
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  .secondary-label {
+    font-size: 8px;
+  }
+
+  .card-secondary {
+    margin-top: 5px;
+    padding-top: 5px;
+  }
+
+  .card-secondary span:first-child {
+    font-size: 12px;
+  }
+
+  .add-btn, .arrow-btn, .yearly-arrow-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .add-btn-container {
+    bottom: 5px;
+    right: 5px;
+    gap: 5px;
+  }
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.card-title {
+  /* font-size: 18px; */
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+}
+
+.card-amount {
+  /* font-size: 32px; */
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+.card-subtitle {
+  /* font-size: 14px; */
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 12px;
+}
+
+.card-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-secondary span:first-child {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.secondary-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+
+.coin-img {
+  position: absolute;
+  width: 50px;   /* increase size */
+  height: 50px;
+  opacity: 0;
+}
+
+.coin1 { left: 5px; animation: fallCoin 2s infinite; }
+.coin2 { left: 20px; animation: fallCoin 2s infinite 0.5s; }
+.coin3 { left: 35px; animation: fallCoin 2s infinite 1s; }
+
+@keyframes fallCoin {
+  0% {
+    top: -20px;
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    top: 50px;
+    opacity: 0;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+
+.coin-out {
+  position: absolute;
+  width: 50px;
+}
+
+/* Different coins with delays */
+.coin4 { left: 5px; animation: moveUp 1.5s infinite; }
+.coin5 { left: 20px; animation: moveUp 2s infinite 0.5s; }
+.coin6 { left: 35px; animation: moveUp 2.5s infinite 1s; }
+
+/* Bottom → Top animation */
+@keyframes moveUp {
+  0% {
+    transform: translateY(40px) scale(1); /* start from bottom */
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(0.7); /* go to top */
+    opacity: 0;
+  }
+}
+
+.coin-drop {
+  position: absolute;
+  width: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: dropCoin 1.8s infinite;
+}
+
+@keyframes dropCoin {
+  0% {
+    top: -20px;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  50% {
+    top: 10px;
+    opacity: 1;
+  }
+  100% {
+    top: 30px;
+    opacity: 0;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+
+.yearly-anim svg {
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Position parent */
+.overview-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🔵 BASE BUTTON */
+.add-btn-container {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.add-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.arrow-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.expenses-gradient .arrow-btn {
+  /* box-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+  border: 1px solid rgba(255, 107, 0, 0.3); */
+}
+
+/* 🎨 TYPE COLORS */
+.add-btn.earnings {
+  /* background: rgba(79, 172, 254, 0.2); */
+  /* box-shadow: 0 0 8px rgba(79, 172, 254, 0.6); */
+}
+
+.add-btn.expenses {
+  /* background: rgba(255, 107, 0, 0.2); */
+  /* box-shadow: 0 0 8px rgba(255, 107, 0, 0.6); */
+}
+
+.add-btn.savings {
+  /* background: rgba(0, 255, 150, 0.2); */
+  /* box-shadow: 0 0 8px rgba(0, 255, 150, 0.6); */
+}
+
+/* ✨ HOVER EFFECT */
+.add-btn:hover {
+  transform: scale(1.15) rotate(90deg);
+}
+
+/* 🔥 GLOW ON HOVER */
+.add-btn.earnings:hover {
+  background: linear-gradient(135deg, #00d4ff, #4facfe);
+  box-shadow: 0 0 15px rgba(79, 172, 254, 1);
+}
+
+.add-btn.expenses:hover {
+  background: linear-gradient(135deg, #ff6b00, #ff9a3c);
+  box-shadow: 0 0 15px rgba(255, 107, 0, 1);
+}
+
+.add-btn.savings:hover {
+  background: linear-gradient(135deg, #00ff96, #00d4ff);
+  box-shadow: 0 0 15px rgba(0, 255, 150, 1);
+}
+
+/* 💫 CLICK EFFECT */
+.add-btn:active {
+  transform: scale(0.9);
+}
+
+.yearly-arrow-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  /* background: rgba(250, 11, 214, 0.2); */
+  box-shadow: 0 0 8px rgba(250, 11, 214, 0.6);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.yearly-arrow-btn:hover {
+  transform: scale(1.15) translateX(2px);
+  background: linear-gradient(135deg, #fa0bd6, #ff64ff);
+  box-shadow: 0 0 15px rgba(250, 11, 214, 1);
+}
+
+.yearly-arrow-btn:active {
+  transform: scale(0.9);
+}
+
+.card-loader-small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  height: 32px;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

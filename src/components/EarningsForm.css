@@ -1,0 +1,317 @@
+/* ================= OVERLAY ================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+/* ================= MODAL ================= */
+.earnings-modal {
+  width: 420px;
+  max-height: 85vh;
+
+  border-radius: 18px;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.95),
+    rgba(15, 23, 42, 0.95)
+  );
+
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 15px 50px rgba(0, 212, 255, 0.15),
+    inset 0 0 25px rgba(255, 255, 255, 0.03);
+
+  overflow: hidden;
+
+  animation: modalFadeIn 0.3s ease;
+}
+
+/* ================= HEADER ================= */
+.modal-header {
+  padding: 16px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* Close Button */
+.modal-header button {
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-header button:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* ================= FORM BODY ================= */
+.form-body {
+  padding: 16px 20px;
+
+  overflow-y: auto;
+  max-height: calc(85vh - 70px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ================= SCROLLBAR ================= */
+.form-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06b6d4, #3b82f6);
+  border-radius: 10px;
+}
+
+.form-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ================= FORM ================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+/* ================= INPUTS ================= */
+.form-group input,
+textarea,
+.p-dropdown,
+.p-calendar {
+  width: 100% !important;
+
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(0, 212, 255, 0.2) !important;
+
+  border-radius: 10px;
+  padding: 10px;
+
+  color: #ffffff !important;
+
+  transition: all 0.3s ease;
+}
+
+/* Placeholder */
+.form-group input::placeholder,
+textarea::placeholder {
+  color: #64748b;
+}
+
+/* Focus */
+.form-group input:focus,
+textarea:focus,
+.p-dropdown:focus,
+.p-calendar:focus-within {
+  border-color: #00d4ff !important;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+  outline: none;
+}
+
+/* Textarea */
+textarea {
+  resize: none;
+}
+
+/* ================= PRIME REACT ================= */
+.p-dropdown-label {
+  color: #fff !important;
+}
+
+.p-dropdown-trigger {
+  color: #94a3b8 !important;
+}
+
+/* Dropdown Panel */
+.p-dropdown-panel {
+  background: #0f172a !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.p-dropdown-item {
+  color: #e2e8f0 !important;
+  padding: 10px;
+}
+
+.p-dropdown-item:hover {
+  background: rgba(0, 212, 255, 0.2) !important;
+}
+
+/* Calendar */
+.p-datepicker {
+  background: #0f172a !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* ================= SWITCH ================= */
+.p-inputswitch {
+  margin-top: 5px;
+}
+
+.p-inputswitch .p-inputswitch-slider {
+  background: #334155;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+/* ================= FILE INPUT ================= */
+input[type="file"] {
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* ================= BUTTON ================= */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  border: none;
+  border-radius: 12px;
+
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+}
+
+.submit-btn:active {
+  transform: scale(0.96);
+}
+
+.submit-btn:disabled {
+  background: #475569 !important;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  opacity: 0.7;
+}
+
+/* ================= TOAST STYLES ================= */
+.p-toast {
+  opacity: 0.98;
+  z-index: 9999 !important;
+}
+
+.p-toast .p-toast-message {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 212, 255, 0.3) !important;
+  border-radius: 12px !important;
+  color: white !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  margin-bottom: 10px;
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+  padding: 1.25rem !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+  border-left: 6px solid #10b981 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-error {
+  border-left: 6px solid #ef4444 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn {
+  border-left: 6px solid #f59e0b !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-info {
+  border-left: 6px solid #3b82f6 !important;
+}
+
+.p-toast .p-toast-message .p-toast-summary {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.p-toast .p-toast-message .p-toast-detail {
+  color: #e2e8f0 !important;
+  font-size: 14px;
+}
+
+.p-toast .p-toast-icon-close {
+  color: #94a3b8 !important;
+}
+
+.p-toast .p-toast-message-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+}
+
+/* ================= ANIMATION ================= */
+@keyframes modalFadeIn {
+  from {
+    transform: translateY(-40px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

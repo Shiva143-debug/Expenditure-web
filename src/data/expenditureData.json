@@ -1,0 +1,384 @@
+{
+  "user": {
+    "name": "Shiva",
+    "period": "April 2024"
+  },
+  "overview": {
+    "totalEarnings": 120000,
+    "totalExpenses": 70500,
+    "totalSavings": 50000,
+    "yearlyEarned": 840000,
+    "yearlySpent": 560000
+  },
+  "earningsSources": [
+    {
+      "id": 1,
+      "name": "Salary",
+      "amount": 75000,
+      "icon": "wallet"
+    },
+    {
+      "id": 2,
+      "name": "Business",
+      "amount": 30000,
+      "icon": "briefcase"
+    },
+    {
+      "id": 3,
+      "name": "Rent",
+      "amount": 15000,
+      "icon": "home"
+    },
+     {
+      "id": 4,
+      "name": "Business",
+      "amount": 30000,
+      "icon": "briefcase"
+    },
+     {
+      "id": 5,
+      "name": "Business",
+      "amount": 30000,
+      "icon": "briefcase"
+    }
+  ],
+  "expenseCategories": [
+    {
+      "id": 1,
+      "name": "Food & Dining",
+      "icon": "utensils",
+      "percentage": 35
+    },
+    {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },
+       {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },   {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },
+       {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    }
+  ],
+   "expenseItems": [
+    {
+      "id": 1,
+      "name": "Food & Dining",
+      "icon": "utensils",
+      "percentage": 35
+    },
+    {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },
+       {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },   {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    },
+       {
+      "id": 2,
+      "name": "Transport",
+      "icon": "car",
+      "percentage": 17
+    },
+    {
+      "id": 3,
+      "name": "Shopping",
+      "icon": "shopping-bag",
+      "percentage": 12
+    },
+    {
+      "id": 4,
+      "name": "Utilities",
+      "icon": "zap",
+      "percentage": 10
+    },
+    {
+      "id": 5,
+      "name": "Entertainment",
+      "icon": "tv",
+      "percentage": 10
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "icon": "more-horizontal",
+      "percentage": 8
+    }
+  ],
+  "savingsCategories": [
+    {
+      "id": 1,
+      "name": "Emergency Fund",
+      "amount": 30000,
+      "icon": "shield"
+    },
+    {
+      "id": 2,
+      "name": "Investments",
+      "amount": 15000,
+      "icon": "trending-up"
+    },
+    {
+      "id": 3,
+      "name": "Vacation Fund",
+      "amount": 5000,
+      "icon": "plane"
+    }
+  ],
+  "recentExpenses": [
+    {
+      "id": 1,
+      "name": "Groceries",
+      "amount": 4500,
+      "icon": "shopping-cart"
+    },
+    {
+      "id": 2,
+      "name": "Fuel",
+      "amount": 2000,
+      "icon": "fuel"
+    },
+    {
+      "id": 3,
+      "name": "Movie Tickets",
+      "amount": 1200,
+      "icon": "film"
+    },
+    {
+      "id": 4,
+      "name": "Electric Bill",
+      "amount": 1800,
+      "icon": "zap"
+    },
+    {
+      "id": 5,
+      "name": "Gym",
+      "amount": 1800,
+      "icon": "dumbbell"
+    },
+    {
+      "id": 6,
+      "name": "Online Sub",
+      "amount": 999,
+      "icon": "wifi"
+    }
+  ],
+  "monthlyStats": [
+    {
+      "month": "Apr",
+      "earnings": 85000,
+      "expenses": 52000
+    },
+    {
+      "month": "May",
+      "earnings": 65000,
+      "expenses": 78000
+    },
+    {
+      "month": "Jun",
+      "earnings": 88000,
+      "expenses": 82000
+    },
+    {
+      "month": "Jul",
+      "earnings": 52000,
+      "expenses": 65000
+    },
+    {
+      "month": "Aug",
+      "earnings": 78000,
+      "expenses": 58000
+    }
+  ]
+}
