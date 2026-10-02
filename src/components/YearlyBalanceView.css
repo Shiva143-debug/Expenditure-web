@@ -1,0 +1,265 @@
+.yearly-balance-view {
+  position: relative;
+  animation: floatFromTop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.yearly-balance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0 5px;
+}
+
+.yearly-balance-search {
+  position: relative;
+  flex: 0 1 260px;
+  display: flex;
+  align-items: center;
+}
+
+/* Totals on the left, month cards on the right with its own vertical scroll. */
+.yearly-balance-body {
+  display: grid;
+  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+/* ---- Summary banner ---- */
+.yearly-balance-summary {
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 55%, #2c5364 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  position: sticky;
+  top: 8px;
+}
+
+.yearly-balance-summary__main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.yearly-balance-summary__figure {
+  flex: 1;
+  min-width: 0;
+}
+
+.yearly-balance-summary__label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+
+.yearly-balance-summary__amount {
+  display: block;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.yearly-balance-summary__amount.is-positive {
+  color: #66bb6a;
+}
+
+.yearly-balance-summary__amount.is-negative {
+  color: #ef5350;
+}
+
+.yearly-balance-summary__icon {
+  color: rgba(255, 255, 255, 0.55);
+  flex: 0 0 auto;
+}
+
+.yearly-balance-summary__totals {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 12px 6px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.yearly-balance-total {
+  flex: 1 1 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+}
+
+.yearly-balance-total + .yearly-balance-total {
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.yearly-balance-total__label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.yearly-balance-total__value {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.yearly-balance-bar {
+  display: flex;
+  height: 8px;
+  margin-top: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.yearly-balance-bar span {
+  min-width: 0;
+}
+
+/* ---- Month cards ---- */
+.yearly-balance-list {
+  max-height: 460px;
+  min-height: 260px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.yearly-balance-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  animation: floatIn 0.5s ease both;
+}
+
+.yearly-balance-card__tile {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2c5364, #203a43);
+}
+
+.yearly-balance-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.yearly-balance-card__top {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.yearly-balance-card__month {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.yearly-balance-card__year {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.yearly-balance-card__stats {
+  display: flex;
+  gap: 6px;
+}
+
+.yearly-balance-card__stat {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.yearly-balance-card__stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.yearly-balance-card__stat-value {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yearly-balance-card__net {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  padding: 6px 9px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.yearly-balance-card__net.is-positive {
+  color: #16a34a;
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.yearly-balance-card__net.is-negative {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.16);
+}
+
+@media (max-width: 900px) {
+  .yearly-balance-body {
+    grid-template-columns: 1fr;
+  }
+
+  .yearly-balance-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .yearly-balance-summary {
+    padding: 14px;
+  }
+
+  .yearly-balance-summary__amount {
+    font-size: 24px;
+  }
+
+  .yearly-balance-list {
+    grid-template-columns: 1fr;
+    max-height: 360px;
+  }
+
+  .yearly-balance-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .yearly-balance-search {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}

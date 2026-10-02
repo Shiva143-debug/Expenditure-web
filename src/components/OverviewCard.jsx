@@ -1,146 +1,105 @@
 import React from 'react';
-// import { Wallet, ShoppingCart, PiggyBank, TrendingUp } from 'lucide-react';
-import { IndianRupee, TrendingDown, PiggyBank, TrendingUp, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronRight, Loader2, Plus } from 'lucide-react';
+import { formatAmount } from '../utils/format';
 import './OverviewCard.css';
 
-const OverviewCard = ({ type, amount, label, secondaryAmount, expenseAmount, secondaryLabel, expenseLabel, onAddClick, onShowYearWiseData, onArrowClick, hideArrow, isLoading, loadingText }) => {
+const COIN_SRC = './images/rupee.png';
 
+const COIN_SETS = {
+  fall: ['coin1', 'coin2', 'coin3'],
+  rise: ['coin4', 'coin5', 'coin6'],
+  drop: ['coin-drop'],
+};
 
-  const getIcon = () => {
-    switch (type) {
-      case 'earnings':
-        return (
-          <div className="icon-anim earnings-anim">
-            <IndianRupee size={40} />
-            <img src="./images/rupee.png" className="coin-img coin1" />
-            <img src="./images/rupee.png" className="coin-img coin2" />
-            <img src="./images/rupee.png" className="coin-img coin3" />
-          </div>
-        );
-
-      case 'expenses':
-        return (
-          <div className="icon-anim expenses-anim">
-            <TrendingDown size={40} />
-            <img src="./images/rupee.png" className="coin-out coin4" />
-            <img src="./images/rupee.png" className="coin-out coin5" />
-            <img src="./images/rupee.png" className="coin-out coin6" />
-          </div>
-        );
-
-      case 'savings':
-        return (
-          <div className="icon-anim savings-anim">
-            <PiggyBank size={40} />
-            <img src="./images/rupee.png" className="coin-drop" />
-          </div>
-        );
-
-      case 'yearly':
-        return (
-          <div className="icon-anim yearly-anim">
-            <TrendingUp size={40} />
-          </div>
-        );
-
-      default:
-        return <IndianRupee size={40} />;
-    }
-  };
-
-  const getGradient = () => {
-    switch (type) {
-      case 'earnings':
-        return 'earnings-gradient';
-      case 'expenses':
-        return 'expenses-gradient';
-      case 'savings':
-        return 'savings-gradient';
-      case 'yearly':
-        return 'yearly-gradient';
-      default:
-        return 'earnings-gradient';
-    }
-  };
-
-  const showYearData =()=>{
-    onShowYearWiseData && onShowYearWiseData()
-  }
+const Coins = ({ variant }) => {
+  const coins = COIN_SETS[variant];
+  if (!coins) return null;
 
   return (
-    <div className={`overview-card px-5 ${getGradient()}`} onClick={showYearData}>
+    <>
+      {coins.map((coin) => (
+        <img key={coin} src={COIN_SRC} alt="" aria-hidden="true" className={`card-coin ${coin}`} />
+      ))}
+    </>
+  );
+};
 
-      {type !== "yearly" && onAddClick && (
-        <div className="add-btn-container">
-          <button
-            className={`add-btn ${type}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddClick();
-            }}
-          >
-            +
-          </button>
-          {type === 'expenses' && onArrowClick && !hideArrow && (
-            <button
-              className="arrow-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onArrowClick();
-              }}
-            >
-              <ChevronRight size={20} />
+/**
+ * Compact, config driven summary card.
+ * `rows` renders the small label / value pairs under the main amount.
+ */
+const OverviewCard = ({
+  tone = 'earnings',
+  icon,
+  coins,
+  label,
+  amount,
+  amountLabel,
+  rows = [],
+  note,
+  isLoading = false,
+  loadingText = 'Loading...',
+  isNegative = false,
+  onAddClick,
+  onOpen,
+  openTitle = 'Open details',
+}) => {
+  return (
+    <article className={`overview-card overview-card--${tone}`}>
+      <div className="card-head">
+        <div className="card-heading">
+          <span className="card-icon">
+            {icon}
+            <Coins variant={coins} />
+          </span>
+          <div className="card-summary">
+            <h4 className="card-title" title={label}>{label}</h4>
+            {isLoading ? (
+              <div className="card-loader">
+                <Loader2 size={15} className="card-spinner" />
+                <span>{loadingText}</span>
+              </div>
+            ) : (
+              <div className={`card-amount ${isNegative ? 'card-amount--negative' : ''}`}>
+                <span className="card-currency">₹</span>
+                {formatAmount(amount)}
+                {amountLabel && <span className="card-amount-label">{amountLabel}</span>}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="card-actions">
+          {onAddClick && (
+            <button type="button" className="card-action" onClick={onAddClick} title={`Add ${label}`} aria-label={`Add ${label}`}>
+              <Plus size={13} />
+            </button>
+          )}
+          {onOpen && (
+            <button type="button" className="card-action" onClick={onOpen} title={openTitle} aria-label={openTitle}>
+              <ChevronRight size={14} />
             </button>
           )}
         </div>
-      )}
-      {type === "yearly" && onShowYearWiseData && !hideArrow && (
-        <button
-          className="yearly-arrow-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            onShowYearWiseData();
-          }}
-        >
-          <ChevronRight size={20} />
-        </button>
-      )}
-      {/* card-icon */}
-      <div className="card-icon">
-        {getIcon()}
       </div>
-      <div className="card-content">
-        <h4 className="card-title">{label}</h4>
-        <hr />
-        {isLoading ? (
-          <div className="card-loader">
-            <div className="loader-top">
-              <Loader2 className="loading-spinner" size={20} />
-              <span>{loadingText || "Fetching data..."}</span>
-            </div>
-            <div className="loader-bars">
-              <div className="loader-bar short" />
-              <div className="loader-bar long" />
-              <div className="loader-bar medium" />
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="card-amount">₹ {amount.toLocaleString('en-IN')}{label === "Yearly Overview" && <span className="secondary-label"> EARNINGS</span>}</div>
-            {expenseAmount && (
-              <div>
-                <span className="card-amount">₹ {expenseAmount.toLocaleString('en-IN')}<span className="secondary-label"> {expenseLabel}</span> </span>
-              </div>
-            )}
-            {secondaryAmount && (
-              <div>
-                <span className="card-amount">₹ {secondaryAmount.toLocaleString('en-IN')}<span className="secondary-label"> {secondaryLabel}</span> </span>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+
+      {!isLoading && (
+        <>
+          {rows.length > 0 && (
+            <ul className="card-rows">
+              {rows.map((row) => (
+                <li key={row.label} className="card-row">
+                  <span className="card-row-label">{row.label}</span>
+                  <span className="card-row-value">{row.value}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {note && <p className="card-note">{note}</p>}
+        </>
+      )}
+    </article>
   );
 };
 

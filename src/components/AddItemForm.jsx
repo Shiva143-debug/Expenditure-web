@@ -7,20 +7,20 @@ import { Toast } from "primereact/toast";
 const AddItemForm = ({ onClose, updateExpenseItems, editData }) => {
   const [expenseName, setItem] = useState("");
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState(null)
-  const [categories, setCategories] = useState([])
+  const [categoryId, setCategory] = useState(null)
+  const [categories, setCategories] = useState([]);
   const toast = useRef(null);
 
   useEffect(() => {
     if (editData) {
       setItem(editData.expenseName || editData.name || "");
-      setCategory(editData.category || null);
+      setCategory(editData.categoryId || null);
     }
   }, [editData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!category) {
+    if (!categoryId) {
       toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Please Select Category', life: 3000 });
       return;
     }
@@ -34,25 +34,26 @@ const AddItemForm = ({ onClose, updateExpenseItems, editData }) => {
     try {
       if (editData) {
         const response = await updateExpenseItem(editData.id, expenseName);
-        if (response && response.status == "201") {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: `${expenseName} already exists`, life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Expense Item updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Expense Item updated successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || `${expenseName} already exists`, life: 3000 });
         }
       } else {
         const payload = {
-          category,
+          categoryId,
           expenseName
         };
         const response = await addExpenseItem(payload);
-        if (response && response.message == "Expense Name already exist") {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: `${expenseName} was already added`, life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Expense Item added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Expense Item added successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || `${expenseName} was already added`, life: 3000 });
         }
       }
+
       await updateExpenseItems();
     } catch (error) {
       toast.current.show({ severity: 'error', summary: 'Error', detail: `Failed to ${editData ? 'update' : 'add'} Expense Item`, life: 3000 });
@@ -68,13 +69,9 @@ const AddItemForm = ({ onClose, updateExpenseItems, editData }) => {
 
   const fetchCategories = async () => {
     try {
-      const data = await getCategories();
-      if (data && Array.isArray(data)) {
-        const mappedCategories = data.map(item => ({
-          ...item,
-          label: item.category,
-          value: item.category
-        }));
+      const res = await getCategories();
+      if (res?.status && Array.isArray(res.data)) {
+        const mappedCategories = res.data.map(item => ({ ...item, label: item.category, value: item.id }));
         setCategories(mappedCategories);
       }
     } catch (error) {
@@ -86,7 +83,6 @@ const AddItemForm = ({ onClose, updateExpenseItems, editData }) => {
     <div className="modal-overlay">
       <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Edit Expense Item' : 'Add Expense Item'}</h2>
           <button onClick={onClose}>✕</button>
@@ -96,23 +92,18 @@ const AddItemForm = ({ onClose, updateExpenseItems, editData }) => {
           <div className="form-group">
             <label>Select Category <span style={{ color: '#ff4d4f' }}>*</span></label>
             <Dropdown
-              value={category}
+              value={categoryId}
               options={categories}
               optionLabel="label"
               optionValue="value"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.value)}
               placeholder="Select category"
               disabled={!!editData}
             />
           </div>
           <div className="form-group">
             <label>Expense Name<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="text"
-              placeholder="Enter expense name"
-              value={expenseName}
-              onChange={(e) => setItem(e.target.value)}
-            />
+            <input type="text" placeholder="Enter expense name" value={expenseName} onChange={(e) => setItem(e.target.value)} />
           </div>
 
           <button className="submit-btn" disabled={loading}>

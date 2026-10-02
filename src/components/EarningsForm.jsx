@@ -5,37 +5,27 @@ import { Toast } from "primereact/toast";
 import "./EarningsForm.css";
 import { getIncomeSources, addIncome, updateIncome as updateIncomeApi } from "../apiService";
 
-
 const EarningsForm = ({ onClose, updateEarnings, editData }) => {
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
   const [sources, setEaringSources] = useState([]);
-  const [formData, setFormData] = useState({
-    source: null,
-    amount: null,
-    date: null
-  });
-
+  const [formData, setFormData] = useState({ sourceId: null, amount: null, date: null });
 
   useEffect(() => {
     fetchEarningSources();
     if (editData) {
-      setFormData({
-        source: editData.source,
-        amount: editData.amount,
-        date: new Date(editData.date)
-      });
+      setFormData({ sourceId: editData.sourceId, amount: editData.amount, date: new Date(editData.date) });
     }
   }, [editData])
 
   const fetchEarningSources = async () => {
     try {
-      const data = await getIncomeSources();
-      if (data && Array.isArray(data)) {
-        const mappedEarningSources = data.map(item => ({
+      const res = await getIncomeSources();
+      if (res?.status && Array.isArray(res.data)) {
+        const mappedEarningSources = res.data.map(item => ({
           ...item,
           label: item.sourceName || item.name || "Unknown",
-          value: item.sourceName || item.name || "Unknown"
+          value: item.id
         }));
         setEaringSources(mappedEarningSources);
       }
@@ -44,11 +34,10 @@ const EarningsForm = ({ onClose, updateEarnings, editData }) => {
     }
   };
 
- 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.source) {
+    if (!formData.sourceId) {
       toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Please Select source', life: 3000 });
       return;
     }
@@ -69,27 +58,27 @@ const EarningsForm = ({ onClose, updateEarnings, editData }) => {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const payload = {
-      source: formData.source,
-      amount: formData.amount,
-      date: formattedDate
-    };
+    const payload = { sourceId: formData.sourceId, amount: formData.amount, date: formattedDate };
 
     try {
       let response;
       if (editData) {
         response = await updateIncomeApi(editData.id, payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Earnings updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Earnings updated successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to update earnings`, life: 3000 });
         }
       } else {
         response = await addIncome(payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Earnings added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Earnings added successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to add earnings`, life: 3000 });
         }
       }
 
-      if (response) {
+      if (response?.status) {
         setTimeout(() => onClose(), 1500);
       }
     } catch (error) {
@@ -105,24 +94,20 @@ const EarningsForm = ({ onClose, updateEarnings, editData }) => {
     <div className="modal-overlay">
       <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Update Earnings' : 'Add Earnings'}</h2>
           <button onClick={onClose}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className="form-body">
-
           <div className="form-group">
             <label>Source<span style={{ color: '#ff4d4f' }}>*</span></label>
             <Dropdown
-              value={formData.source}
+              value={formData.sourceId}
               options={sources}
               optionLabel="label"
               optionValue="value"
-              onChange={(e) =>
-                setFormData({ ...formData, source: e.value })
-              }
+              onChange={(e) => setFormData({ ...formData, sourceId: e.value })}
               placeholder="Select Source"
               className="w-full"
             />
@@ -130,28 +115,14 @@ const EarningsForm = ({ onClose, updateEarnings, editData }) => {
 
           <div className="form-group">
             <label>Amount<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              value={formData.amount}
-              onChange={(e) =>
-                setFormData({ ...formData, amount: e.target.value })
-              }
-            />
+            <input type="number" placeholder="Enter amount" value={formData.amount}
+              onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />
           </div>
 
           <div className="form-group">
             <label>Date<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <Calendar
-              value={formData.date}
-              onChange={(e) =>
-                setFormData({ ...formData, date: e.value })
-              }
-              showIcon
-              placeholder="Select Date"
-              className="w-full"
-              dateFormat="dd/mm/yy"
-            />
+            <Calendar value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.value })} showIcon
+              placeholder="Select Date" className="w-full" dateFormat="dd/mm/yy" />
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
@@ -164,7 +135,6 @@ const EarningsForm = ({ onClose, updateEarnings, editData }) => {
               editData ? 'Update Earnings' : 'Add Earnings'
             )}
           </button>
-
         </form>
       </div>
     </div>

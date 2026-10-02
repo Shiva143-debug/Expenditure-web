@@ -1,0 +1,126 @@
+.overview-cards {
+  margin-bottom: 14px;
+}
+
+.overview-slider {
+  position: relative;
+}
+
+.overview-slider__track {
+  --card-width: clamp(168px, 19.5vw, 245px);
+
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.overview-slider__track::-webkit-scrollbar {
+  display: none;
+}
+
+.overview-slider__item {
+  flex: 0 0 var(--card-width);
+  scroll-snap-align: start;
+}
+
+.overview-slider__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 14, 39, 0.78);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transform: translateY(-60%);
+  transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.overview-slider__nav:hover:not(:disabled) {
+  background: rgba(0, 212, 255, 0.25);
+  border-color: #00d4ff;
+}
+
+.overview-slider__nav:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overview-slider__nav--prev {
+  left: -13px;
+}
+
+.overview-slider__nav--next {
+  right: -13px;
+}
+
+.overview-slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.overview-slider__dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: width 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.overview-slider__dot:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.overview-slider__dot.is-active {
+  width: 20px;
+  background: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+@media (max-width: 968px) {
+  .overview-slider__track {
+    --card-width: clamp(152px, 31vw, 215px);
+  }
+
+  .overview-slider__nav--prev {
+    left: 0;
+  }
+
+  .overview-slider__nav--next {
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .overview-cards {
+    margin-bottom: 12px;
+  }
+
+  .overview-slider__track {
+    --card-width: clamp(142px, 47vw, 185px);
+    gap: 9px;
+  }
+
+  .overview-slider__nav {
+    width: 26px;
+    height: 26px;
+  }
+}

@@ -30,22 +30,22 @@ const AddSourceForm = ({ onClose, updateIncomeSources, editData }) => {
           sourceName: name
         };
         const response = await updateIncomeSource(editData.id, payload);
-        if (response && response.status == "201") {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: `${name} already exists`, life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Income Source updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Income Source updated successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || `${name} already exists`, life: 3000 });
         }
       } else {
         const payload = {
           sourceName: name
         };
         const response = await addIncomeSource(payload);
-        if (response && response.status == 201) {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: 'Income source was already added', life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Income Source added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Income Source added successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || 'Income source was already added', life: 3000 });
         }
       }
       await updateIncomeSources();
@@ -61,7 +61,6 @@ const AddSourceForm = ({ onClose, updateIncomeSources, editData }) => {
     <div className="modal-overlay">
       <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Edit Source' : 'Add Source'}</h2>
           <button onClick={onClose}>✕</button>
@@ -70,12 +69,7 @@ const AddSourceForm = ({ onClose, updateIncomeSources, editData }) => {
         <form className="form-body" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Source Name <span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="text"
-              placeholder="Enter source name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <input type="text" placeholder="Enter source name" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
           <button className="submit-btn" disabled={loading}>

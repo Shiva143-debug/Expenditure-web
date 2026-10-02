@@ -25,22 +25,22 @@ const AddCategoryForm = ({ onClose, updateCategories, editData }) => {
     try {
       if (editData) {
         const response = await updateCategory(editData.id, editData.name, category);
-        if (response && response.status == "201") {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: `${category} already exists`, life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Category updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Category updated successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || 'Failed to update category', life: 3000 });
         }
       } else {
         const payload = {
           category
         };
         const response = await addCategory(payload);
-        if (response && response.status == 201) {
-          toast.current.show({ severity: 'info', summary: 'Info', detail: 'Category was already added', life: 3000 });
-        } else if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Category added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Category added successfully', life: 3000 });
           setTimeout(() => onClose(), 1500);
+        } else {
+          toast.current.show({ severity: 'warn', summary: 'Info', detail: response?.message || 'Failed to add category', life: 3000 });
         }
       }
       updateCategories && await updateCategories();
@@ -56,7 +56,6 @@ const AddCategoryForm = ({ onClose, updateCategories, editData }) => {
     <div className="modal-overlay">
       <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Edit Category' : 'Add Category'}</h2>
           <button onClick={onClose}>✕</button>
@@ -65,12 +64,7 @@ const AddCategoryForm = ({ onClose, updateCategories, editData }) => {
         <form className="form-body" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Category Name<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="text"
-              placeholder="Enter category name"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
+            <input type="text" placeholder="Enter category name" value={category} onChange={(e) => setCategory(e.target.value)} />
           </div>
 
           <button className="submit-btn" disabled={loading}>

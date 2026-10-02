@@ -7,19 +7,11 @@ import { Calendar } from "primereact/calendar";
 const SavingsForm = ({ onClose, updateSavings, editData }) => {
   const toast = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    amount: null,
-    date: null,
-    note: ""
-  });
+  const [formData, setFormData] = useState({ amount: null, date: null, note: "" });
 
   useEffect(() => {
     if (editData) {
-      setFormData({
-        amount: editData.amount,
-        date: new Date(editData.date),
-        note: editData.note || ""
-      });
+      setFormData({ amount: editData.amount, date: new Date(editData.date), note: editData.note || "" });
     }
   }, [editData])
 
@@ -42,27 +34,27 @@ const SavingsForm = ({ onClose, updateSavings, editData }) => {
     const day = String(date.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const payload = {
-      amount: formData.amount,
-      date: formattedDate,
-      note: formData.note
-    };
+    const payload = { amount: formData.amount, date: formattedDate, note: formData.note };
 
     try {
       let response;
       if (editData) {
         response = await updateSavingsApi(editData.id, payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Saving updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Saving updated successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to update saving`, life: 3000 });
         }
       } else {
         response = await addSaving(payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Saving added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Saving added successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to add saving`, life: 3000 });
         }
       }
-      
-      if (response) {
+
+      if (response?.status) {
         setTimeout(() => onClose(), 1500);
       }
     } catch (error) {
@@ -76,53 +68,37 @@ const SavingsForm = ({ onClose, updateSavings, editData }) => {
 
   return (
     <div className="modal-overlay">
-       <Toast ref={toast} position="top-right" />
+      <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Update Savings' : 'Add Savings'}</h2>
           <button onClick={onClose}>✕</button>
         </div>
 
         <form className="form-body" onSubmit={handleSubmit}>
-
           <div className="form-group">
             <label>Amount <span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-            />
+            <input type="number" placeholder="Enter amount" value={formData.amount}
+              onChange={(e) => setFormData({ ...formData, amount: e.target.value })} />
           </div>
 
           <div className="form-group">
             <label>Date <span style={{ color: '#ff4d4f' }}>*</span></label>
-            <Calendar
-              value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.value })}
-              showIcon
-              placeholder="Select Date"
-              dateFormat="dd/mm/yy"
-              className="w-full"
-            />
+            <Calendar value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.value })} showIcon
+              placeholder="Select Date" dateFormat="dd/mm/yy" className="w-full" />
           </div>
 
           <div className="form-group">
             <label>Note (Optional)</label>
-            <textarea
-              rows="3"
-              placeholder="Enter note"
-              value={formData.note}
+            <textarea rows="3" placeholder="Enter note" value={formData.note}
               onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-                            style={{
+              style={{
                 padding: "10px",
                 borderRadius: "10px",
                 background: "rgba(255,255,255,0.06)",
                 color: "white",
                 border: "1px solid rgba(0,212,255,0.2)"
-              }}
-            />
+              }} />
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
@@ -135,7 +111,6 @@ const SavingsForm = ({ onClose, updateSavings, editData }) => {
               editData ? 'Update Savings' : 'Add Savings'
             )}
           </button>
-
         </form>
       </div>
     </div>

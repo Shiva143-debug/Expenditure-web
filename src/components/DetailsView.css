@@ -109,14 +109,13 @@
   -ms-overflow-style: none;
 }
 
-.monthly-expenses-overlay .details-content {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-}
-
-@media (min-width: 1024px) {
-  .monthly-expenses-overlay .details-content {
-    grid-template-columns: repeat(4, 1fr);
-  }
+/* The three monthly views share one grid so their cards line up column for
+   column. No fixed column count: the overlay lives inside a flex panel, so
+   auto-fill keeps every card the same width at any panel size. */
+.monthly-expenses-overlay .details-content,
+.monthly-income-overlay .details-content,
+.monthly-savings-overlay .details-content {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 .details-content:has(.no-data-message) {
@@ -500,4 +499,61 @@
   font-size: 16px;
   letter-spacing: 0.3px;
   line-height: 1.5;
+}
+
+/* ---- Shared header total pill (income / expenses / savings) ---- */
+.details-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  white-space: nowrap;
+}
+
+.details-total__label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.details-total__value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #00ff96;
+}
+
+.details-total__meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.details-header--with-total {
+  flex-wrap: wrap;
+}
+
+.details-header--with-total .search-container {
+  min-width: 140px;
+}
+
+/* ---- Card grid for the single-feature details views ---- */
+@media (max-width: 640px) {
+  .monthly-expenses-overlay .details-content,
+  .monthly-income-overlay .details-content,
+  .monthly-savings-overlay .details-content {
+    grid-template-columns: 1fr;
+  }
+
+  .details-header--with-total .details-total {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+  }
+
+  .details-header--with-total .search-container {
+    max-width: none;
+  }
 }

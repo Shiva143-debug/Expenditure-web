@@ -12,55 +12,32 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
   const [categories, setCategories] = useState([])
   const [expenseItems, setExpenseItems] = useState([])
   const [formData, setFormData] = useState({
-    category: null,
-    expenseName: null,
-    cost: "",
-    date: null,
-    description: "",
-    isTax: false,
-    percentage: 0,
-    taxAmount: 0,
-    image: null
+    categoryId: null, expenseItemId: null, cost: "", date: null, description: "",
+    isTax: false, percentage: 0, taxAmount: 0, image: null
   });
 
   useEffect(() => {
     fetchCategories();
     if (editData) {
       setFormData({
-        category: editData.category,
-        expenseName: null,
-        cost: editData.cost,
-        date: new Date(editData.pDate),
-        description: editData.description || "",
-        isTax: editData.isTaxApp || false,
-        percentage: editData.percentage || 0,
-        taxAmount: editData.taxAmount || 0,
-        image: editData.image || null
+        categoryId: editData.categoryId, expenseItemId: editData.expenseItemId, cost: editData.cost,
+        date: new Date(editData.pDate), description: editData.description || "", isTax: editData.isTaxApp || false,
+        percentage: editData.percentage || 0, taxAmount: editData.taxAmount || 0, image: editData.image || null
       });
     }
   }, [editData])
 
   useEffect(() => {
-    if (formData.category) {
-      fetchExpenseItemsByCategory(formData.category);
+    if (formData.categoryId) {
+      fetchExpenseItemsByCategory(formData.categoryId);
     }
-  }, [formData.category])
-
-  useEffect(() => {
-    if (editData && expenseItems.length > 0 && formData.expenseName === null) {
-      setFormData(prev => ({ ...prev, expenseName: editData.expenseName }));
-    }
-  }, [expenseItems, editData])
+  }, [formData.categoryId])
 
   const fetchCategories = async () => {
     try {
-      const data = await getCategories();
-      if (data && Array.isArray(data)) {
-        const mappedCategories = data.map(item => ({
-          ...item,
-          label: item.category,
-          value: item.category
-        }));
+      const res = await getCategories();
+      if (res?.status && Array.isArray(res.data)) {
+        const mappedCategories = res.data.map(item => ({ ...item, label: item.category, value: item.id }));
         setCategories(mappedCategories);
       }
     } catch (error) {
@@ -68,15 +45,11 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
     }
   };
 
-  const fetchExpenseItemsByCategory = async (category) => {
+  const fetchExpenseItemsByCategory = async (categoryId) => {
     try {
-      const data = await getExpenseItemsByCategory(category);
-      if (data && Array.isArray(data)) {
-        const mappedExpenseItems = data.map(item => ({
-          ...item,
-          label: item.expenseName,
-          value: item.expenseName
-        }));
+      const res = await getExpenseItemsByCategory(categoryId);
+      if (res?.status && Array.isArray(res.data)) {
+        const mappedExpenseItems = res.data.map(item => ({ ...item, label: item.expenseName, value: item.id }));
         setExpenseItems(mappedExpenseItems);
       }
     } catch (error) {
@@ -115,11 +88,11 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.category) {
+    if (!formData.categoryId) {
       toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Please Select Category', life: 3000 });
       return;
     }
-    if (!formData.expenseName) {
+    if (!formData.expenseItemId) {
       toast.current.show({ severity: 'warn', summary: 'Warning', detail: 'Please Select expense name', life: 3000 });
       return;
     }
@@ -149,32 +122,30 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
     }
 
     const payload = {
-      category: formData.category,
-      expenseName: formData.expenseName,
-      cost: parseInt(formData.cost),
-      pDate: formattedDate,
-      description: formData.description,
-      isTaxApp: formData.isTax,
-      percentage: parseInt(formData.percentage),
-      taxAmount: formData.taxAmount,
-      image: base64Image
+      categoryId: formData.categoryId, expenseItemId: formData.expenseItemId, cost: parseInt(formData.cost),
+      pDate: formattedDate, description: formData.description, isTaxApp: formData.isTax,
+      percentage: parseInt(formData.percentage), taxAmount: formData.taxAmount, image: base64Image
     };
 
     try {
       let response;
       if (editData) {
         response = await updateExpenseApi(editData.id, payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Expense updated successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to update Expense`, life: 3000 });
         }
       } else {
         response = await addExpense(payload);
-        if (response) {
-          toast.current.show({ severity: 'success', summary: 'Success', detail: 'Expense added successfully', life: 3000 });
+        if (response?.status) {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: response.message || 'Expense added successfully', life: 3000 });
+        } else if (response) {
+          toast.current.show({ severity: 'error', summary: 'Error', detail: response?.message || `Failed to add Expense`, life: 3000 });
         }
       }
-      
-      if (response) {
+
+      if (response?.status) {
         setTimeout(() => onClose(), 1500);
       }
     } catch (error) {
@@ -190,74 +161,47 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
     <div className="modal-overlay">
       <Toast ref={toast} position="top-right" />
       <div className="earnings-modal">
-
         <div className="modal-header">
           <h2>{editData ? 'Update Expense' : 'Add Expense'}</h2>
           <button onClick={onClose}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit} className="form-body">
-
           <div className="form-group">
             <label>Category<span style={{ color: '#ff4d4f' }}>*</span></label>
             <Dropdown
-              value={formData.category}
+              value={formData.categoryId}
               options={categories}
               optionLabel="label"
               optionValue="value"
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.value })
-                
-              }
+              onChange={(e) => setFormData({ ...formData, categoryId: e.value })}
               placeholder="Select Category"
               className="w-full"
             />
-
           </div>
 
-
-          {formData.category !== null &&
+          {formData.categoryId !== null &&
             <div className="form-group">
               <label>Expense Name <span style={{ color: '#ff4d4f' }}>*</span></label>
-              <Dropdown
-                value={formData.expenseName}
-                options={expenseItems}
-                optionLabel="label"
-                optionValue="value"
-                onChange={(e) =>
-                  setFormData({ ...formData, expenseName: e.value })
-                }
-                placeholder="Select Expense Name"
-              />
+              <Dropdown value={formData.expenseItemId} options={expenseItems} optionLabel="label" optionValue="value"
+                onChange={(e) => setFormData({ ...formData, expenseItemId: e.value })} placeholder="Select Expense Name" />
             </div>
           }
           <div className="form-group">
             <label>Amount<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              value={formData.cost}
-              onChange={(e) => handleChange("cost", e.target.value)}
-            />
+            <input type="number" placeholder="Enter amount" value={formData.cost}
+              onChange={(e) => handleChange("cost", e.target.value)} />
           </div>
 
           <div className="form-group">
             <label>Date<span style={{ color: '#ff4d4f' }}>*</span></label>
-            <Calendar
-              value={formData.date}
-              onChange={(e) => handleChange("date", e.value)}
-              showIcon
-              placeholder="Select Date"
-              dateFormat="dd/mm/yy"
-            />
+            <Calendar value={formData.date} onChange={(e) => handleChange("date", e.value)} showIcon
+              placeholder="Select Date" dateFormat="dd/mm/yy" />
           </div>
 
           <div className="form-group">
             <label>Description(Optional)</label>
-            <textarea
-              rows="3"
-              placeholder="Enter description"
-              value={formData.description}
+            <textarea rows="3" placeholder="Enter description" value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
               style={{
                 padding: "10px",
@@ -265,49 +209,32 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
                 background: "rgba(255,255,255,0.06)",
                 color: "white",
                 border: "1px solid rgba(0,212,255,0.2)"
-              }}
-            />
+              }} />
           </div>
 
           <div className="form-group">
             <label>Is Tax Applicable?(By Default Not Applicable)</label>
-            <InputSwitch
-              checked={formData.isTax}
-              onChange={(e) => handleChange("isTax", e.value)}
-            />
+            <InputSwitch checked={formData.isTax} onChange={(e) => handleChange("isTax", e.value)} />
           </div>
 
           {formData.isTax && (
             <>
               <div className="form-group">
                 <label>Percentage (%)<span style={{ color: '#ff4d4f' }}>*</span></label>
-                <input
-                  type="number"
-                  placeholder="Enter %"
-                  value={formData.percentage}
-                  onChange={(e) => handleChange("percentage", e.target.value)}
-                />
+                <input type="number" placeholder="Enter %" value={formData.percentage}
+                  onChange={(e) => handleChange("percentage", e.target.value)} />
               </div>
 
               <div className="form-group">
                 <label>Tax Amount</label>
-                <input
-                  type="number"
-                  value={formData.taxAmount}
-                  disabled
-                />
+                <input type="number" value={formData.taxAmount} disabled />
               </div>
             </>
           )}
 
           <div className="form-group">
             <label>Select Image (Optional)</label>
-            <input
-              type="file"
-              onChange={(e) =>
-                handleChange("image", e.target.files[0])
-              }
-            />
+            <input type="file" onChange={(e) => handleChange("image", e.target.files[0])} />
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
@@ -320,7 +247,6 @@ const ExpenseForm = ({ onClose, updateExpense, editData }) => {
               editData ? 'Update Expense' : 'Add Expense'
             )}
           </button>
-
         </form>
       </div>
     </div>
