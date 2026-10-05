@@ -188,7 +188,7 @@ const OverviewCards = ({
   };
 
   return (
-    <div className="overview-cards">
+    <div className="overview-cards mb-5">
       <div className="overview-slider">
         {overflow.isScrollable && (
           <>
