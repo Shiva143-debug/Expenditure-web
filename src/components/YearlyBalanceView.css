@@ -229,6 +229,11 @@
   background: rgba(220, 38, 38, 0.16);
 }
 
+@media (max-width:900px) {
+  .yearly-balance-card__net{
+    display:none
+}
+
 @media (max-width: 900px) {
   .yearly-balance-body {
     grid-template-columns: 1fr;
