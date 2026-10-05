@@ -232,6 +232,7 @@
 @media (max-width:900px) {
   .yearly-balance-card__net{
     display:none
+  }
 }
 
 @media (max-width: 900px) {
